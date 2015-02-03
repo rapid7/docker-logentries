@@ -11,9 +11,9 @@ __TODO__:
 
 ## Usage as a CLI
 
-Step 1: `npm install docker-logentries -g`
-Step 2: `docker-logentries -t TOKEN`
-Step 3: ..there is no step 3
+1. `npm install docker-logentries -g`
+2. `docker-logentries -t TOKEN`
+3. ..there is no step 3
 
 You can also pass the `-j` switch if you log in JSON format, like
 [bunyan](http://npm.im/bunyan)
