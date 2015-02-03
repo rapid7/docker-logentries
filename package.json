@@ -1,0 +1,17 @@
+{
+  "name": "docker-logentries",
+  "version": "0.0.1",
+  "description": "Forward all logs from all running docker containers to LogEntries",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Matteo Collina <matteo.collina@nearform.com>",
+  "license": "MIT",
+  "dependencies": {
+    "docker-loghose": "^0.2.0",
+    "end-of-stream": "^1.1.0",
+    "minimist": "^1.1.0",
+    "through2": "^0.6.3"
+  }
+}
