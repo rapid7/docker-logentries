@@ -34,12 +34,14 @@ function start(opts) {
     cb()
   });
   var loghose = factory(opts);
+  var noRestart = function() {};
   loghose.pipe(filter);
 
   pipe();
 
   // destroy out if loghose is destroyed
   eos(loghose, function() {
+    noRestart()
     out.destroy();
   });
 
@@ -55,7 +57,7 @@ function start(opts) {
     filter.pipe(out, { end: false });
 
     // automatically reconnect on socket failure
-    eos(out, pipe);
+    noRestart = eos(out, pipe);
   }
 }
 
