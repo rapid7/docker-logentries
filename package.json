@@ -9,7 +9,7 @@
   "author": "Matteo Collina <matteo.collina@nearform.com>",
   "license": "MIT",
   "dependencies": {
-    "docker-loghose": "^0.2.0",
+    "docker-loghose": "^0.3.0",
     "end-of-stream": "^1.1.0",
     "minimist": "^1.1.0",
     "through2": "^0.6.3"
