@@ -7,7 +7,7 @@ __TODO__:
 * [ ] publish on NPM
 * [ ] publish on Docker Hub
 * [ ] update readme with Docker HUB and NPM details
-* [ ] fix `destroy()`
+* [x] fix `destroy()`
 
 ## Usage as a CLI
 
