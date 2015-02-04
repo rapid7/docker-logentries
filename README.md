@@ -27,7 +27,8 @@ Then, in your JS file:
 ```
 var logentries = require('docker-logentries')({
   json: false, // or true to parse lines as JSON
-  secure: false // or true to connect securely
+  secure: false, // or true to connect securely
+  token: process.env.TOKEN // logentries TOKEN
 })
 
 // logentries is the source stream with all the
