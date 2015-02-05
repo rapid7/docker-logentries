@@ -30,7 +30,8 @@ Then, in your JS file:
 var logentries = require('docker-logentries')({
   json: false, // or true to parse lines as JSON
   secure: false, // or true to connect securely
-  token: process.env.TOKEN // logentries TOKEN
+  token: process.env.TOKEN, // logentries TOKEN
+  stats: true // disable stats if false
 })
 
 // logentries is the source stream with all the
@@ -43,7 +44,12 @@ setTimeout(function() {
 
 ## Docker usage
 
-TO BE DONE
+First clone this repository, then:
+
+```bash
+docker build -t docker-logentries .
+docker run -v /var/run/docker.sock:/var/run/docker.sock docker-logentries -t <TOKEN> -j
+```
 
 ## License
 
