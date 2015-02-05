@@ -5,7 +5,9 @@ var net = require('net');
 var eos = require('end-of-stream');
 var through = require('through2');
 var minimist = require('minimist');
-var factory = require('docker-loghose');
+var allContainers = require('docker-allcontainers');
+var statsFactory = require('docker-stats');
+var logFactory = require('docker-loghose');
 
 function connect(opts) {
   var stream;
@@ -26,6 +28,7 @@ function connect(opts) {
 function start(opts) {
   var token = opts.token;
   var out;
+  var noRestart = function() {};
   var filter = through.obj(function(obj, enc, cb) {
     this.push(token);
     this.push(' ');
@@ -33,9 +36,16 @@ function start(opts) {
     this.push('\n');
     cb()
   });
-  var loghose = factory(opts);
-  var noRestart = function() {};
+  var events = allContainers(opts);
+  opts.events = events;
+
+  var loghose = logFactory(opts);
   loghose.pipe(filter);
+
+  if (opts.stats === false) {
+    var stats = statsFactory(opts);
+    stats.pipe(filter);
+  }
 
   pipe();
 
@@ -63,16 +73,19 @@ function start(opts) {
 
 function cli() {
   var argv = minimist(process.argv.slice(2), {
-    boolean: ['json'],
+    boolean: ['json', 'stats'],
     alias: {
       'token': 't',
       'secure': 's',
       'json': 'j'
     },
     default: {
-      json: false
+      json: false,
+      stats: true
     }
   });
+
+  console.log(argv);
 
   if (!argv.token) {
     console.log('Usage: docker-logentries -t TOKEN [--secure] [--json]');

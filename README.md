@@ -16,7 +16,9 @@ __TODO__:
 3. ..there is no step 3
 
 You can also pass the `-j` switch if you log in JSON format, like
-[bunyan](http://npm.im/bunyan)
+[bunyan](http://npm.im/bunyan).
+You can also pass the `--no-stats` flag if you do not want stats to be
+published to logentries every second.
 
 ## Embedded usage
 
