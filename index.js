@@ -42,7 +42,7 @@ function start(opts) {
   var loghose = logFactory(opts);
   loghose.pipe(filter);
 
-  if (opts.stats === false) {
+  if (opts.stats !== false) {
     var stats = statsFactory(opts);
     stats.pipe(filter);
   }
@@ -85,10 +85,8 @@ function cli() {
     }
   });
 
-  console.log(argv);
-
   if (!argv.token) {
-    console.log('Usage: docker-logentries -t TOKEN [--secure] [--json]');
+    console.log('Usage: docker-logentries -t TOKEN [--secure] [--json] [--no-stats]');
     process.exit(1);
   }
 
