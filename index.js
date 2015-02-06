@@ -25,11 +25,13 @@ function connect(opts) {
   return stream;
 }
 
+
 function start(opts) {
   var token = opts.token;
   var out;
   var noRestart = function() {};
   var filter = through.obj(function(obj, enc, cb) {
+    addAll(opts.add, obj);
     this.push(token);
     this.push(' ');
     this.push(JSON.stringify(obj));
@@ -57,6 +59,17 @@ function start(opts) {
 
   return loghose;
 
+  function addAll(proto, obj) {
+    if (!proto) { return; }
+
+    var key;
+    for (key in proto) {
+      if (proto.hasOwnProperty(key)) {
+        obj[key] = proto[key];
+      }
+    }
+  }
+
   function pipe() {
     if (out) {
       filter.unpipe(out);
@@ -77,18 +90,30 @@ function cli() {
     alias: {
       'token': 't',
       'secure': 's',
-      'json': 'j'
+      'json': 'j',
+      'add': 'a'
     },
     default: {
       json: false,
-      stats: true
+      stats: true,
+      add: []
     }
   });
 
   if (!argv.token) {
-    console.log('Usage: docker-logentries -t TOKEN [--secure] [--json] [--no-stats]');
+    console.log('Usage: docker-logentries -t TOKEN [--secure] [--json] [--no-stats] [-a KEY=VALUE]');
     process.exit(1);
   }
+
+  if (argv.add && !Array.isArray(argv.add)) {
+    argv.add = [argv.add];
+  }
+
+  argv.add = argv.add.reduce(function(acc, arg) {
+    arg = arg.split('=');
+    acc[arg[0]] = arg[1];
+    return acc
+  }, {});
 
   start(argv);
 }
