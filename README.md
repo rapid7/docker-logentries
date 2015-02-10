@@ -1,12 +1,19 @@
 # docker-logentries
 
-Forward all your logs to [logentries](logentries.com), like a breeze.
+Forward all your logs to [LogEntries](logentries.com), like a breeze.
 
-__TODO__:
+## Usage as a Container
 
-* [ ] publish on NPM
-* [ ] publish on Docker Hub
-* [ ] update readme with Docker HUB and NPM details
+The simplest way to forward all your container's log to LogEntries is to
+run this repository as a container, with:
+
+```sh
+docker run -v /var/run/docker.sock:/var/run/docker.sock logentries -t <TOKEN> -j -a host=`uname -n`
+```
+
+You can also pass the `--no-stats` flag if you do not want stats to be
+published to logentries every second. You __need this flag for Docker
+version < 1.5__.
 
 ## Usage as a CLI
 
@@ -44,13 +51,13 @@ setTimeout(function() {
 }, 5000)
 ```
 
-## Docker usage
+## Building a docker repo from this repository
 
 First clone this repository, then:
 
 ```bash
-docker build -t docker-logentries .
-docker run -v /var/run/docker.sock:/var/run/docker.sock docker-logentries -t <TOKEN> -j -a host=`uname -n`
+docker build -t logentries .
+docker run -v /var/run/docker.sock:/var/run/docker.sock logentries -t <TOKEN> -j -a host=`uname -n`
 ```
 
 ## License
