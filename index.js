@@ -19,7 +19,7 @@ function connect(opts) {
 
   function onSecure() {
     // let's just crash if we are not secure
-    if (!stram.authorized) throw new Error('secure connection not authorized');
+    if (!stream.authorized) throw new Error('secure connection not authorized');
   }
 
   return stream;
