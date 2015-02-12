@@ -2,6 +2,10 @@
 
 Forward all your logs to [LogEntries](logentries.com), like a breeze.
 
+![logentries dashboard](./dashboard.png)
+
+See the Logentries community pack at [http://revelops.com/community/packs/docker/](http://revelops.com/community/packs/docker/).
+
 ## Usage as a Container
 
 The simplest way to forward all your container's log to LogEntries is to
