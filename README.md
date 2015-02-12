@@ -2,7 +2,7 @@
 
 Forward all your logs to [LogEntries](logentries.com), like a breeze.
 
-![logentries dashboard](./dashboard.png)
+![logentries dashboard](https://raw.githubusercontent.com/nearform/docker-logentries/master/dashboard.png)
 
 See the Logentries community pack at [http://revelops.com/community/packs/docker/](http://revelops.com/community/packs/docker/).
 
