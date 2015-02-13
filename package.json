@@ -9,9 +9,9 @@
   "author": "Matteo Collina <matteo.collina@nearform.com>",
   "license": "MIT",
   "dependencies": {
-    "docker-allcontainers": "git+http://github.com/mcollina/docker-allcontainers.git#stats",
-    "docker-stats": "git+http://github.com/pelger/docker-stats.git",
+    "docker-allcontainers": "^0.1.2",
     "docker-loghose": "^0.3.0",
+    "docker-stats": "^0.1.1",
     "end-of-stream": "^1.1.0",
     "minimist": "^1.1.0",
     "through2": "^0.6.3"
