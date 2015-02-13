@@ -12,7 +12,7 @@ The simplest way to forward all your container's log to LogEntries is to
 run this repository as a container, with:
 
 ```sh
-docker run -v /var/run/docker.sock:/var/run/docker.sock docker-logentries/logentries -t <TOKEN> -j -a host=`uname -n`
+docker run -v /var/run/docker.sock:/var/run/docker.sock logentries/docker-logentries -t <TOKEN> -j -a host=`uname -n`
 ```
 
 You can also pass the `--no-stats` flag if you do not want stats to be
