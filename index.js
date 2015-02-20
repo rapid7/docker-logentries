@@ -12,9 +12,9 @@ var logFactory = require('docker-loghose');
 function connect(opts) {
   var stream;
   if (opts.secure) {
-    stream = tls.connect(20000, 'api.logentries.com', onSecure);
+    stream = tls.connect(443, 'data.logentries.com', onSecure);
   } else {
-    stream = net.createConnection(10000, 'api.logentries.com');
+    stream = net.createConnection(80, 'data.logentries.com');
   }
 
   function onSecure() {
