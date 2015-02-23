@@ -27,12 +27,19 @@ function connect(opts) {
 
 
 function start(opts) {
-  var token = opts.token;
+  var logsToken = opts.logstoken || opts.token;
+  var statsToken = opts.statstoken || opts.token;
   var out;
   var noRestart = function() {};
   var filter = through.obj(function(obj, enc, cb) {
     addAll(opts.add, obj);
-    this.push(token);
+
+    if (obj.line) {
+      this.push(logsToken);
+    } else {
+      this.push(statsToken);
+    }
+
     this.push(' ');
     this.push(JSON.stringify(obj));
     this.push('\n');
@@ -89,6 +96,8 @@ function cli() {
     boolean: ['json', 'stats'],
     alias: {
       'token': 't',
+      'logstoken': 'l',
+      'statstoken': 'k',
       'secure': 's',
       'json': 'j',
       'add': 'a'
@@ -100,8 +109,10 @@ function cli() {
     }
   });
 
-  if (!argv.token) {
-    console.log('Usage: docker-logentries -t TOKEN [--secure] [--json] [--no-stats] [-a KEY=VALUE]');
+  if (!(argv.token || (argv.logstoken && argv.statstoken))) {
+    console.log('Usage: docker-logentries [-l LOGSTOKEN] [-k STATSTOKEN]\n' +
+                '                         [-t TOKEN] [--secure] [--json]\n' +
+                '                         [--no-stats] [-a KEY=VALUE]');
     process.exit(1);
   }
 

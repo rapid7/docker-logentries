@@ -15,6 +15,11 @@ run this repository as a container, with:
 docker run -v /var/run/docker.sock:/var/run/docker.sock logentries/docker-logentries -t <TOKEN> -j -a host=`uname -n`
 ```
 
+You can also use two different tokens for logging and stats:
+```sh
+docker run -v /var/run/docker.sock:/var/run/docker.sock logentries/docker-logentries -l <LOGSTOKEN> -k <STATSTOKEN> -j -a host=`uname -n`
+```
+
 You can also pass the `--no-stats` flag if you do not want stats to be
 published to logentries every second. You __need this flag for Docker
 version < 1.5__.
