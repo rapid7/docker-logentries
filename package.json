@@ -13,9 +13,9 @@
   "author": "Matteo Collina <matteo.collina@nearform.com>",
   "license": "MIT",
   "dependencies": {
-    "docker-allcontainers": "^0.1.2",
-    "docker-loghose": "^0.3.0",
-    "docker-stats": "^0.1.1",
+    "docker-allcontainers": "^0.2.0",
+    "docker-loghose": "^0.4.0",
+    "docker-stats": "^0.2.0",
     "end-of-stream": "^1.1.0",
     "minimist": "^1.1.0",
     "through2": "^0.6.3"
