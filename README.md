@@ -27,6 +27,7 @@ version < 1.5__.
 ### Running container in a restricted environment.
 Some environments(such as Google Compute Engine) does not allow to access the docker socket without special privileges. You will get EACCES(`Error: read EACCES`) error if you try to run the container.
 To run the container in such environments add --privileged to the `docker run` command. 
+
 Example:
 ```sh
 docker run --privileged -v /var/run/docker.sock:/var/run/docker.sock logentries/docker-logentries -t <TOKEN> -j -a host=`uname -n`
