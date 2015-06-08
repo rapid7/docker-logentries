@@ -46,14 +46,23 @@ function start(opts) {
     cb()
   });
   var events = allContainers(opts);
+  var loghose;
+  var stats;
+
   opts.events = events;
 
-  var loghose = logFactory(opts);
-  loghose.pipe(filter);
+  if (opts.logs !== false) {
+    loghose = logFactory(opts);
+    loghose.pipe(filter);
+  }
 
   if (opts.stats !== false) {
-    var stats = statsFactory(opts);
+    stats = statsFactory(opts);
     stats.pipe(filter);
+  }
+
+  if (!stats && !logs) {
+    throw new Error('you should enable stats, logs or both')
   }
 
   pipe();
@@ -105,6 +114,7 @@ function cli() {
     default: {
       json: false,
       stats: true,
+      logs: true,
       add: []
     }
   });
@@ -112,7 +122,10 @@ function cli() {
   if (!(argv.token || (argv.logstoken && argv.statstoken))) {
     console.log('Usage: docker-logentries [-l LOGSTOKEN] [-k STATSTOKEN]\n' +
                 '                         [-t TOKEN] [--secure] [--json]\n' +
-                '                         [--no-stats] [-a KEY=VALUE]');
+                '                         [--no-stats] [--no-logs] [-a KEY=VALUE]\n' +
+                '                         [--matchByImage REGEXP] [--matchByName REGEXP]\n' +
+                '                         [--skipByImage REGEXP] [--skipByName REGEXP]');
+
     process.exit(1);
   }
 

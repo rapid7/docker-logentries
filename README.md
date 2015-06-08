@@ -24,9 +24,20 @@ You can also pass the `--no-stats` flag if you do not want stats to be
 published to logentries every second. You __need this flag for Docker
 version < 1.5__.
 
+You can also pass the `--no-logs` flag if you do not want logs to be
+published to logentries.
+
+You can also filter filter the containers for whitch the logs/stats are
+forwarded with:
+
+* `--matchByName REGEXP`: forward logs/stats only for the containers whose name matches the given REGEXP.
+* `--matchByImage REGEXP`: forward logs/stats only for the containers whose image matches the given REGEXP.
+* `--skipByName REGEXP`: do not forward logs/stats for the containers whose name matches the given REGEXP.
+* `--skipByImage REGEXP`: do not forward logs/stats for the containers whose image matches the given REGEXP.
+
 ### Running container in a restricted environment.
 Some environments(such as Google Compute Engine) does not allow to access the docker socket without special privileges. You will get EACCES(`Error: read EACCES`) error if you try to run the container.
-To run the container in such environments add --privileged to the `docker run` command. 
+To run the container in such environments add --privileged to the `docker run` command.
 
 Example:
 ```sh
@@ -46,6 +57,14 @@ published to logentries every second.
 The `-a/--add` flag allows to add fixed values to the data being
 published. This follows the format 'name=value'.
 
+You can also filter filter the containers for whitch the logs/stats are
+forwarded with:
+
+* `--matchByName REGEXP`: forward logs/stats only for the containers whose name matches the given REGEXP.
+* `--matchByImage REGEXP`: forward logs/stats only for the containers whose image matches the given REGEXP.
+* `--skipByName REGEXP`: do not forward logs/stats for the containers whose name matches the given REGEXP.
+* `--skipByImage REGEXP`: do not forward logs/stats for the containers whose image matches the given REGEXP.
+
 ## Embedded usage
 
 Install it with: `npm install docker-logentries --save`
@@ -59,6 +78,13 @@ var logentries = require('docker-logentries')({
   token: process.env.TOKEN, // logentries TOKEN
   stats: true, // disable stats if false
   add: null, // an object whose properties will be added
+
+  // the following options limit the containers being matched
+  // so we can avoid catching logs for unwanted containers
+  matchByName: /hello/, // optional
+  matchByImage: /matteocollina/, //optional
+  skipByName: /.*pasteur.*/, //optional
+  skipByImage: /.*dockerfile.*/ //optional
 })
 
 // logentries is the source stream with all the
