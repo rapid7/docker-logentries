@@ -61,7 +61,7 @@ function start(opts) {
     stats.pipe(filter);
   }
 
-  if (!stats && !logs) {
+  if (!stats && !loghose) {
     throw new Error('you should enable stats, logs or both')
   }
 
