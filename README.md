@@ -1,6 +1,6 @@
 # docker-logentries
 
-Forward all your logs to [LogEntries](https://logentries.com), like a breeze.
+Forward all your logs to [Logentries](https://logentries.com), like a breeze.
 
 ![logentries dashboard](https://raw.githubusercontent.com/nearform/docker-logentries/master/dashboard.png)
 
