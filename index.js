@@ -1,5 +1,7 @@
 #! /usr/bin/env node
 
+'use strict';
+
 var tls = require('tls');
 var net = require('net');
 var eos = require('end-of-stream');
@@ -8,6 +10,7 @@ var minimist = require('minimist');
 var allContainers = require('docker-allcontainers');
 var statsFactory = require('docker-stats');
 var logFactory = require('docker-loghose');
+var eventsFactory = require('docker-event-log');
 
 function connect(opts) {
   var stream;
@@ -31,6 +34,7 @@ function start(opts) {
   var statsToken = opts.statstoken || opts.token;
   var out;
   var noRestart = function() {};
+
   var filter = through.obj(function(obj, enc, cb) {
     addAll(opts.add, obj);
 
@@ -48,6 +52,7 @@ function start(opts) {
   var events = allContainers(opts);
   var loghose;
   var stats;
+  var dockerEvents;
 
   opts.events = events;
 
@@ -61,8 +66,13 @@ function start(opts) {
     stats.pipe(filter);
   }
 
-  if (!stats && !loghose) {
-    throw new Error('you should enable stats, logs or both')
+  if (opts.dockerEvents !== false) {
+    dockerEvents = eventsFactory(opts);
+    dockerEvents.pipe(filter);
+  }
+
+  if (!stats && !loghose && !dockerEvents) {
+    throw new Error('you should enable at least one of stats, logs or dockerEvents');
   }
 
   pipe();
@@ -102,7 +112,7 @@ function start(opts) {
 
 function cli() {
   var argv = minimist(process.argv.slice(2), {
-    boolean: ['json', 'stats'],
+    boolean: ['json', 'stats', 'dockerEvents'],
     alias: {
       'token': 't',
       'logstoken': 'l',
@@ -115,6 +125,7 @@ function cli() {
       json: false,
       stats: true,
       logs: true,
+      dockerEvents: true,
       add: []
     }
   });
@@ -122,7 +133,7 @@ function cli() {
   if (!(argv.token || (argv.logstoken && argv.statstoken))) {
     console.log('Usage: docker-logentries [-l LOGSTOKEN] [-k STATSTOKEN]\n' +
                 '                         [-t TOKEN] [--secure] [--json]\n' +
-                '                         [--no-stats] [--no-logs] [-a KEY=VALUE]\n' +
+                '                         [--no-stats] [--no-logs] [--no-dockerEvents] [-a KEY=VALUE]\n' +
                 '                         [--matchByImage REGEXP] [--matchByName REGEXP]\n' +
                 '                         [--skipByImage REGEXP] [--skipByName REGEXP]');
 

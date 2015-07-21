@@ -1,6 +1,6 @@
 {
   "name": "docker-logentries",
-  "version": "0.3.1",
+  "version": "0.4.1",
   "description": "Forward all logs from all running docker containers to LogEntries",
   "repository": {
     "type": "git",
@@ -14,8 +14,10 @@
   "license": "MIT",
   "dependencies": {
     "docker-allcontainers": "^0.4.0",
+    "docker-event-log": "^0.1.2",
     "docker-loghose": "^0.6.0",
     "docker-stats": "^0.4.0",
+    "dockerode": "^2.2.2",
     "end-of-stream": "^1.1.0",
     "minimist": "^1.1.1",
     "through2": "^0.6.5"
