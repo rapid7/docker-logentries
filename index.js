@@ -128,7 +128,9 @@ function cli() {
       logs: true,
       dockerEvents: true,
       'statsinterval': 30,
-      add: []
+      add: [],
+      logstoken: process.env.LOGENTRIES_LOGSTOKEN || process.env.LOGENTRIES_TOKEN,
+      statstoken: process.env.LOGENTRIES_STATSTOKEN || process.env.LOGENTRIES_TOKEN
     }
   });
 
