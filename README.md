@@ -8,7 +8,7 @@ See the Logentries community pack at [http://revelops.com/community/packs/docker
 
 ## Usage as a Container
 
-The simplest way to forward all your container's log to LogEntries is to
+The simplest way to forward all your container's log to Logentries is to
 run this repository as a container, with:
 
 ```sh
@@ -21,13 +21,15 @@ docker run -v /var/run/docker.sock:/var/run/docker.sock logentries/docker-logent
 ```
 
 You can also pass the `--no-stats` flag if you do not want stats to be
-published to logentries every second. You __need this flag for Docker
+published to Logentries every second. You __need this flag for Docker
 version < 1.5__.
 
 You can also pass the `--no-logs` flag if you do not want logs to be
-published to logentries.
+published to Logentries.
 
-You can also filter filter the containers for whitch the logs/stats are
+The `-i <STATSINTERVAL>` downsamples the logs sent to Logentries. It collects samples and averages them before sending to Logentries.
+
+You can also filter filter the containers for which the logs/stats are
 forwarded with:
 
 * `--matchByName REGEXP`: forward logs/stats only for the containers whose name matches the given REGEXP.
@@ -53,9 +55,10 @@ docker run --privileged -v /var/run/docker.sock:/var/run/docker.sock logentries/
 You can also pass the `-j` switch if you log in JSON format, like
 [bunyan](http://npm.im/bunyan).
 You can also pass the `--no-stats` flag if you do not want stats to be
-published to logentries every second.
+published to Logentries every second.
 The `-a/--add` flag allows to add fixed values to the data being
 published. This follows the format 'name=value'.
+The `-i/--statsinterval` downsamples the logs sent to Logentries. It collects samples and averages them before sending to Logentries.
 
 You can also filter filter the containers for whitch the logs/stats are
 forwarded with:

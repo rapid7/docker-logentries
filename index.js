@@ -119,6 +119,7 @@ function cli() {
       'statstoken': 'k',
       'secure': 's',
       'json': 'j',
+      'statsinterval': 'i',
       'add': 'a'
     },
     default: {
@@ -126,6 +127,7 @@ function cli() {
       stats: true,
       logs: true,
       dockerEvents: true,
+      'statsinterval': 1,
       add: []
     }
   });
@@ -133,7 +135,8 @@ function cli() {
   if (!(argv.token || (argv.logstoken && argv.statstoken))) {
     console.log('Usage: docker-logentries [-l LOGSTOKEN] [-k STATSTOKEN]\n' +
                 '                         [-t TOKEN] [--secure] [--json]\n' +
-                '                         [--no-stats] [--no-logs] [--no-dockerEvents] [-a KEY=VALUE]\n' +
+                '                         [--no-stats] [--no-logs] [--no-dockerEvents]\n' +
+                '                         [-i STATSINTERVAL] [-a KEY=VALUE]\n' +
                 '                         [--matchByImage REGEXP] [--matchByName REGEXP]\n' +
                 '                         [--skipByImage REGEXP] [--skipByName REGEXP]');
 
