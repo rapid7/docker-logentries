@@ -1,7 +1,7 @@
 {
   "name": "docker-logentries",
-  "version": "0.4.1",
-  "description": "Forward all logs from all running docker containers to LogEntries",
+  "version": "0.5.0",
+  "description": "Forward all logs from all running docker containers to Logentries",
   "repository": {
     "type": "git",
     "url": "https://github.com/nearform/docker-logentries.git"
@@ -16,7 +16,7 @@
     "docker-allcontainers": "^0.4.0",
     "docker-event-log": "^0.1.2",
     "docker-loghose": "^0.6.0",
-    "docker-stats": "^0.4.0",
+    "docker-stats": "^0.5.0",
     "dockerode": "^2.2.2",
     "end-of-stream": "^1.1.0",
     "minimist": "^1.1.1",
