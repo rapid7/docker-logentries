@@ -127,7 +127,7 @@ function cli() {
       stats: true,
       logs: true,
       dockerEvents: true,
-      'statsinterval': 1,
+      'statsinterval': 30,
       add: []
     }
   });
