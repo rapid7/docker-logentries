@@ -11,6 +11,7 @@ var allContainers = require('docker-allcontainers');
 var statsFactory = require('docker-stats');
 var logFactory = require('docker-loghose');
 var eventsFactory = require('docker-event-log');
+var os = require('os');
 
 function connect(opts) {
   var stream;
@@ -32,43 +33,58 @@ function connect(opts) {
 function start(opts) {
   var logsToken = opts.logstoken || opts.token;
   var statsToken = opts.statstoken || opts.token;
+  var eventsToken = opts.eventstoken || opts.token;
   var out;
   var noRestart = function() {};
 
   var filter = through.obj(function(obj, enc, cb) {
     addAll(opts.add, obj);
+    var token = '';
 
     if (obj.line) {
-      this.push(logsToken);
-    } else {
-      this.push(statsToken);
+      token = logsToken;
+    }
+    else if (obj.type) {
+      token = eventsToken;
+    }
+    else if (obj.stats) {
+      token = statsToken;
     }
 
-    this.push(' ');
-    this.push(JSON.stringify(obj));
-    this.push('\n');
+    if (token) {
+      this.push(token);
+      this.push(' ');
+      this.push(JSON.stringify(obj));
+      this.push('\n');
+    }
+
     cb()
   });
+
   var events = allContainers(opts);
   var loghose;
   var stats;
   var dockerEvents;
+  var streamsOpened = 0;
 
   opts.events = events;
 
-  if (opts.logs !== false) {
+  if (opts.logs !== false && logsToken) {
     loghose = logFactory(opts);
     loghose.pipe(filter);
+    streamsOpened++;
   }
 
-  if (opts.stats !== false) {
+  if (opts.stats !== false && statsToken) {
     stats = statsFactory(opts);
     stats.pipe(filter);
+    streamsOpened++;
   }
 
-  if (opts.dockerEvents !== false) {
+  if (opts.dockerEvents !== false && eventsToken) {
     dockerEvents = eventsFactory(opts);
     dockerEvents.pipe(filter);
+    streamsOpened++;
   }
 
   if (!stats && !loghose && !dockerEvents) {
@@ -77,10 +93,18 @@ function start(opts) {
 
   pipe();
 
-  // destroy out if loghose is destroyed
-  eos(loghose, function() {
-    noRestart()
-    out.destroy();
+  // destroy out if all streams are destroyed
+  loghose && eos(loghose, function() {
+    streamsOpened--;
+    streamClosed(streamsOpened);
+  });
+  stats && eos(stats, function() {
+    streamsOpened--;
+    streamClosed(streamsOpened);
+  });
+  dockerEvents && eos(dockerEvents, function() {
+    streamsOpened--;
+    streamClosed(streamsOpened);
   });
 
   return loghose;
@@ -108,15 +132,24 @@ function start(opts) {
     // automatically reconnect on socket failure
     noRestart = eos(out, pipe);
   }
+
+  function streamClosed(streamsOpened) {
+    if (streamsOpened <= 0) {
+      noRestart()
+      out.destroy();
+    }
+  }
 }
 
 function cli() {
   var argv = minimist(process.argv.slice(2), {
-    boolean: ['json', 'stats', 'dockerEvents'],
+    boolean: ['json', 'secure', 'stats', 'logs', 'dockerEvents'],
+    string: ['token', 'logstoken', 'statstoken', 'eventstoken'],
     alias: {
       'token': 't',
       'logstoken': 'l',
       'statstoken': 'k',
+      'eventstoken': 'e',
       'secure': 's',
       'json': 'j',
       'statsinterval': 'i',
@@ -128,19 +161,22 @@ function cli() {
       logs: true,
       dockerEvents: true,
       statsinterval: 30,
-      add: [],
+      add: [ 'host=' + os.hostname() ],
+      token: process.env.LOGENTRIES_TOKEN,
       logstoken: process.env.LOGENTRIES_LOGSTOKEN || process.env.LOGENTRIES_TOKEN,
-      statstoken: process.env.LOGENTRIES_STATSTOKEN || process.env.LOGENTRIES_TOKEN
+      statstoken: process.env.LOGENTRIES_STATSTOKEN || process.env.LOGENTRIES_TOKEN,
+      eventstoken: process.env.LOGENTRIES_EVENTSTOKEN || process.env.LOGENTRIES_TOKEN
     }
   });
 
-  if (!(argv.token || (argv.logstoken && argv.statstoken))) {
-    console.log('Usage: docker-logentries [-l LOGSTOKEN] [-k STATSTOKEN]\n' +
+  if (argv.help || !(argv.token || argv.logstoken || argv.statstoken || argv.eventstoken)) {
+    console.log('Usage: docker-logentries [-l LOGSTOKEN] [-k STATSTOKEN] [-e EVENTSTOKEN]\n' +
                 '                         [-t TOKEN] [--secure] [--json]\n' +
                 '                         [--no-stats] [--no-logs] [--no-dockerEvents]\n' +
                 '                         [-i STATSINTERVAL] [-a KEY=VALUE]\n' +
                 '                         [--matchByImage REGEXP] [--matchByName REGEXP]\n' +
-                '                         [--skipByImage REGEXP] [--skipByName REGEXP]');
+                '                         [--skipByImage REGEXP] [--skipByName REGEXP]\n' +
+                '                         [--help]');
 
     process.exit(1);
   }
