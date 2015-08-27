@@ -1,6 +1,6 @@
 {
   "name": "docker-logentries",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Forward all logs from all running docker containers to Logentries",
   "repository": {
     "type": "git",

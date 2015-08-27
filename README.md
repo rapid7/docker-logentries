@@ -15,19 +15,23 @@ run this repository as a container, with:
 docker run -v /var/run/docker.sock:/var/run/docker.sock logentries/docker-logentries -t <TOKEN> -j -a host=`uname -n`
 ```
 
-You can also use two different tokens for logging and stats:
+You can also use different tokens for logging, stats and events:
 ```sh
-docker run -v /var/run/docker.sock:/var/run/docker.sock logentries/docker-logentries -l <LOGSTOKEN> -k <STATSTOKEN> -j -a host=`uname -n`
+docker run -v /var/run/docker.sock:/var/run/docker.sock logentries/docker-logentries -l <LOGSTOKEN> -k <STATSTOKEN> -e <EVENTSTOKEN> -j -a host=`uname -n`
 ```
 
-You can also pass the `--no-stats` flag if you do not want stats to be
+You can pass the `--no-stats` flag if you do not want stats to be
 published to Logentries every second. You __need this flag for Docker
 version < 1.5__.
 
-You can also pass the `--no-logs` flag if you do not want logs to be
+You can pass the `--no-logs` flag if you do not want logs to be published to Logentries.
+
+You can pass the `--no-dockerEvents` flag if you do not want events to be
 published to Logentries.
 
-The `-i <STATSINTERVAL>` downsamples the logs sent to Logentries. It collects samples and averages them before sending to Logentries.
+The `-i/--statsinterval <STATSINTERVAL>` downsamples the logs sent to Logentries. It collects samples and averages them before sending to Logentries.
+
+If you don't use `-a` a default ``host=`uname -n` `` value will be added.
 
 You can also filter filter the containers for which the logs/stats are
 forwarded with:
@@ -54,10 +58,18 @@ docker run --privileged -v /var/run/docker.sock:/var/run/docker.sock logentries/
 
 You can also pass the `-j` switch if you log in JSON format, like
 [bunyan](http://npm.im/bunyan).
-You can also pass the `--no-stats` flag if you do not want stats to be
+
+You can pass the `--no-stats` flag if you do not want stats to be
 published to Logentries every second.
+
+You can pass the `--no-logs` flag if you do not want logs to be published to Logentries.
+
+You can pass the `--no-dockerEvents` flag if you do not want events to be
+published to Logentries.
+
 The `-a/--add` flag allows to add fixed values to the data being
 published. This follows the format 'name=value'.
+
 The `-i/--statsinterval` downsamples the logs sent to Logentries. It collects samples and averages them before sending to Logentries.
 
 You can also filter filter the containers for whitch the logs/stats are
