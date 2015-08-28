@@ -148,6 +148,7 @@ function cli() {
     alias: {
       'token': 't',
       'logstoken': 'l',
+      'newline': 'n',
       'statstoken': 'k',
       'eventstoken': 'e',
       'secure': 's',
@@ -157,6 +158,7 @@ function cli() {
     },
     default: {
       json: false,
+      newline: true,
       stats: true,
       logs: true,
       dockerEvents: true,
@@ -172,7 +174,7 @@ function cli() {
   if (argv.help || !(argv.token || argv.logstoken || argv.statstoken || argv.eventstoken)) {
     console.log('Usage: docker-logentries [-l LOGSTOKEN] [-k STATSTOKEN] [-e EVENTSTOKEN]\n' +
                 '                         [-t TOKEN] [--secure] [--json]\n' +
-                '                         [--no-stats] [--no-logs] [--no-dockerEvents]\n' +
+                '                         [--no-newline] [--no-stats] [--no-logs] [--no-dockerEvents]\n' +
                 '                         [-i STATSINTERVAL] [-a KEY=VALUE]\n' +
                 '                         [--matchByImage REGEXP] [--matchByName REGEXP]\n' +
                 '                         [--skipByImage REGEXP] [--skipByName REGEXP]\n' +

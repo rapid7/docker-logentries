@@ -91,6 +91,7 @@ var logentries = require('docker-logentries')({
   json: false, // or true to parse lines as JSON
   secure: false, // or true to connect securely
   token: process.env.TOKEN, // logentries TOKEN
+  newline: true, // Split on newline delimited entries
   stats: true, // disable stats if false
   add: null, // an object whose properties will be added
 

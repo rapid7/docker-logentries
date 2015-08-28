@@ -15,7 +15,7 @@
   "dependencies": {
     "docker-allcontainers": "^0.4.0",
     "docker-event-log": "^0.1.2",
-    "docker-loghose": "^0.6.0",
+    "docker-loghose": "^0.7.0",
     "docker-stats": "^0.5.0",
     "dockerode": "^2.2.2",
     "end-of-stream": "^1.1.0",
