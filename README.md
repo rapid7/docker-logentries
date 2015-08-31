@@ -33,7 +33,7 @@ The `-i/--statsinterval <STATSINTERVAL>` downsamples the logs sent to Logentries
 
 If you don't use `-a` a default ``host=`uname -n` `` value will be added.
 
-You can also filter filter the containers for which the logs/stats are
+You can also filter the containers for which the logs/stats are
 forwarded with:
 
 * `--matchByName REGEXP`: forward logs/stats only for the containers whose name matches the given REGEXP.
@@ -72,7 +72,7 @@ published. This follows the format 'name=value'.
 
 The `-i/--statsinterval` downsamples the logs sent to Logentries. It collects samples and averages them before sending to Logentries.
 
-You can also filter filter the containers for whitch the logs/stats are
+You can also filter the containers for which the logs/stats are
 forwarded with:
 
 * `--matchByName REGEXP`: forward logs/stats only for the containers whose name matches the given REGEXP.
