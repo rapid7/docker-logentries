@@ -16,9 +16,9 @@ var os = require('os');
 function connect(opts) {
   var stream;
   if (opts.secure) {
-    stream = tls.connect(443, 'data.logentries.com', onSecure);
+    stream = tls.connect(opts.port, opts.server, onSecure);
   } else {
-    stream = net.createConnection(80, 'data.logentries.com');
+    stream = net.createConnection(opts.port, opts.server);
   }
 
   function onSecure() {
@@ -141,10 +141,12 @@ function start(opts) {
   }
 }
 
+var unbound;
+
 function cli() {
   var argv = minimist(process.argv.slice(2), {
     boolean: ['json', 'secure', 'stats', 'logs', 'dockerEvents'],
-    string: ['token', 'logstoken', 'statstoken', 'eventstoken'],
+    string: ['token', 'logstoken', 'statstoken', 'eventstoken', 'server', 'port'],
     alias: {
       'token': 't',
       'logstoken': 'l',
@@ -167,7 +169,9 @@ function cli() {
       token: process.env.LOGENTRIES_TOKEN,
       logstoken: process.env.LOGENTRIES_LOGSTOKEN || process.env.LOGENTRIES_TOKEN,
       statstoken: process.env.LOGENTRIES_STATSTOKEN || process.env.LOGENTRIES_TOKEN,
-      eventstoken: process.env.LOGENTRIES_EVENTSTOKEN || process.env.LOGENTRIES_TOKEN
+      eventstoken: process.env.LOGENTRIES_EVENTSTOKEN || process.env.LOGENTRIES_TOKEN,
+      server: 'data.logentries.com',
+      port: unbound
     }
   });
 
@@ -178,9 +182,25 @@ function cli() {
                 '                         [-i STATSINTERVAL] [-a KEY=VALUE]\n' +
                 '                         [--matchByImage REGEXP] [--matchByName REGEXP]\n' +
                 '                         [--skipByImage REGEXP] [--skipByName REGEXP]\n' +
+                '                         [--server HOSTNAME] [--port PORT]\n' +
                 '                         [--help]');
 
     process.exit(1);
+  }
+
+  if (argv.port == unbound) {
+    if (argv.secure) {
+      argv.port = 443;
+    } else {
+      argv.port = 80;
+    }
+  } else {
+      argv.port = parseInt(argv.port);
+      // TODO: support service names
+      if (isNaN(argv.port)) {
+        console.log('port must be a number');
+        process.exit(1);
+      }
   }
 
   if (argv.add && !Array.isArray(argv.add)) {
