@@ -41,6 +41,16 @@ forwarded with:
 * `--skipByName REGEXP`: do not forward logs/stats for the containers whose name matches the given REGEXP.
 * `--skipByImage REGEXP`: do not forward logs/stats for the containers whose image matches the given REGEXP.
 
+You can pass the `--containersTokensFilepath` flag if you want different containers logs
+to be published to different log sets.
+The configuration file needs to respect the following format:
+```json
+{
+    "repoName1": "logentries_token",
+    "repoName2": "logentries_token"
+}
+```
+
 ### Running container in a restricted environment.
 Some environments(such as Google Compute Engine) does not allow to access the docker socket without special privileges. You will get EACCES(`Error: read EACCES`) error if you try to run the container.
 To run the container in such environments add --privileged to the `docker run` command.
