@@ -113,11 +113,34 @@ setTimeout(function() {
 
 ## Building a docker repo from this repository
 
+### Using the plain docker file
 First clone this repository, then:
 
 ```bash
 docker build -t logentries .
 docker run -v /var/run/docker.sock:/var/run/docker.sock logentries -t <TOKEN> -j -a host=`uname -n`
+```
+### Using Make - the official nodejs onbuild image 
+```bash
+export BUILD_TYPE=node-onbuild
+make build
+make test
+make tag
+```
+
+### Using Make - the alpine linx build (~42Mb)
+```bash
+export BUILD_TYPE=alpine-node
+make build
+make test
+make tag
+```
+
+### Pushing to your own repo
+After you've build, tested, tagged it locally
+```bash
+export DOCKER_REGISTRY_PREFIX=you-dockerhub-user/yourimage-name
+make push
 ```
 
 ## How it works
