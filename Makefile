@@ -5,6 +5,7 @@ BUILD_TYPE ?=node-onbuild
 
 NAME_BUILD_CONTAINER ?=logentries-build-$(BUILD_TYPE)
 NAME_TEST_CONTAINER ?=logentries-test-$(BUILD_TYPE)
+NAME_EXPORT_CONTAINER ?=logentries-export-$(BUILD_TYPE)
 
 DOCKER_REGISTRY_PREFIX ?=logentries/logentries
 DOCKER_REGISTRY_IMAGE_TAG_VERSION ?=$(shell node -e "console.log(require('./package.json').version);")
@@ -52,6 +53,11 @@ tag: ## Tags a local build image to make it ready for push to docker registry
 push: ## Push the local image to the docker registry
 	docker push $(DOCKER_REGISTRY_PREFIX):$(DOCKER_REGISTRY_IMAGE_TAG_PREFIX)$(DOCKER_REGISTRY_IMAGE_TAG_VERSION)
 
+export: ## Export the build as a tarball
+	-docker rm -f $(NAME_EXPORT_CONTAINER)
+	docker create --name $(NAME_EXPORT_CONTAINER) $(NAME_BUILD_CONTAINER)
+	docker export -o logentries-$(DOCKER_REGISTRY_IMAGE_TAG_PREFIX)$(DOCKER_REGISTRY_IMAGE_TAG_VERSION).tar `docker ps -a -q -f 'name=$(NAME_EXPORT_CONTAINER)'`
+
 help: ## Shows help
 	@echo "================================================================================================="
 	@echo "support build types are:"
@@ -69,3 +75,4 @@ help: ## Shows help
         help_info=`echo $${help_split[2]} | sed -e 's/^ *//' -e 's/ *$$//'` ; \
         printf "%-30s %s\n" $$help_command $$help_info ; \
     done
+
