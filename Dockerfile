@@ -1,10 +1,9 @@
 # docker-logentries
 #
-# VERSION 1.0.0
+# VERSION 0.2.0
 
-FROM mhart/alpine-node:5.10.1
+FROM node:0.12-onbuild
 MAINTAINER Matteo Collina <hello@matteocollina.com>
-RUN apk add --no-cache bash
 
 WORKDIR /usr/src/app
 COPY package.json package.json
