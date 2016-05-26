@@ -15,4 +15,3 @@ RUN chown node:node -R /usr/src
 
 USER node
 ENTRYPOINT ["/usr/src/app/index.js"]
-CMD []
