@@ -89,7 +89,7 @@ Then, in your JS file:
 ```
 var logentries = require('docker-logentries')({
   json: false, // or true to parse lines as JSON
-  secure: false, // or true to connect securely
+  secure: true, // or false to connect over plain TCP
   token: process.env.TOKEN, // logentries TOKEN
   newline: true, // Split on newline delimited entries
   stats: true, // disable stats if false
