@@ -3,7 +3,7 @@
 # VERSION 0.2.0
 
 FROM node:0.12-onbuild
-MAINTAINER Matteo Collina <hello@matteocollina.com>
+MAINTAINER Rapid 7 - Logentries <support@logentries.com>
 
 WORKDIR /usr/src/app
 COPY package.json package.json
