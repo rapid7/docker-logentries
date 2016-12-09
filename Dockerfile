@@ -10,5 +10,8 @@ COPY package.json package.json
 RUN npm install --production
 COPY index.js /usr/src/app/index.js
 
+RUN useradd -ms /bin/bash node
+RUN chown node:node -R /usr/src
+
+USER node
 ENTRYPOINT ["/usr/src/app/index.js"]
-CMD []
