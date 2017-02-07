@@ -1,8 +1,8 @@
 # docker-logentries
 #
-# VERSION 0.2.0
+# VERSION 0.2.1
 
-FROM alpine:edge
+FROM alpine:3.5
 MAINTAINER Rapid 7 - Logentries <support@logentries.com>
 
 RUN echo '@edge http://nl.alpinelinux.org/alpine/edge/main' >> /etc/apk/repositories
