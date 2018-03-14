@@ -163,6 +163,12 @@ and the stats as a never ending stream of data.
 All the originating requests are wrapped in a
 [never-ending-stream](https://github.com/mcollina/never-ending-stream).
 
+
+## Contact Support
+
+Please email our support team at support@logentries.com if you need any help.
+
+
 ## License
 
 MIT
