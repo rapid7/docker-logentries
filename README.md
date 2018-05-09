@@ -1,3 +1,6 @@
+# Using InsightOps?
+Please use our updated [library](https://github.com/rapid7/r7insight_docker) which supports specifying the region to send your log data to.
+
 # docker-logentries
 
 Forward all your logs to [Logentries](https://logentries.com), like a breeze.
