@@ -7,7 +7,7 @@ Forward all your logs to [Logentries](https://logentries.com), like a breeze.
 
 ![logentries dashboard](https://raw.githubusercontent.com/nearform/docker-logentries/master/dashboard.png)
 
-See the Logentries community pack at [http://revelops.com/community/packs/docker/](http://revelops.com/community/packs/docker/).
+See the Logentries community pack at [https://logentries.com/resources/packs/docker/](https://logentries.com/resources/packs/docker/).
 
 ## Usage as a Container
 
