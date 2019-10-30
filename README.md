@@ -15,12 +15,26 @@ The simplest way to forward all your container's log to Logentries is to
 run this repository as a container, with:
 
 ```sh
-docker run -v /var/run/docker.sock:/var/run/docker.sock logentries/docker-logentries -t <TOKEN> -j -a host=`uname -n`
+docker run -v /var/run/docker.sock:/var/run/docker.sock \
+           --read-only \
+           --security-opt=no-new-privileges \
+           logentries/docker-logentries \
+           -t <TOKEN> \
+           -j \
+           -a host=`uname -n`
 ```
 
 You can also use different tokens for logging, stats and events:
 ```sh
-docker run -v /var/run/docker.sock:/var/run/docker.sock logentries/docker-logentries -l <LOGSTOKEN> -k <STATSTOKEN> -e <EVENTSTOKEN> -j -a host=`uname -n`
+docker run -v /var/run/docker.sock:/var/run/docker.sock \
+           --read-only \
+           --security-opt=no-new-privileges \
+           logentries/docker-logentries \
+           -l <LOGSTOKEN> \
+           -k <STATSTOKEN> \
+           -e <EVENTSTOKEN> \
+           -j \
+           -a host=`uname -n`
 ```
 
 You can pass the `--no-stats` flag if you do not want stats to be
@@ -50,7 +64,14 @@ To run the container in such environments add --privileged to the `docker run` c
 
 Example:
 ```sh
-docker run --privileged -v /var/run/docker.sock:/var/run/docker.sock logentries/docker-logentries -t <TOKEN> -j -a host=`uname -n`
+docker run --privileged \
+           -v /var/run/docker.sock:/var/run/docker.sock \
+           --read-only \
+           --security-opt=no-new-privileges \
+           logentries/docker-logentries \
+           -t <TOKEN> \
+           -j \
+           -a host=`uname -n`
 ```
 
 ## Usage as a CLI
@@ -121,7 +142,14 @@ First clone this repository, then:
 
 ```bash
 docker build -t logentries .
-docker run -v /var/run/docker.sock:/var/run/docker.sock logentries -t <TOKEN> -j -a host=`uname -n`
+
+docker run -v /var/run/docker.sock:/var/run/docker.sock \
+           --read-only \
+           --security-opt=no-new-privileges \
+           logentries \
+           -t <TOKEN> \
+           -j \
+           -a host=`uname -n`
 ```
 ### Using Make - the official nodejs onbuild image 
 ```bash
