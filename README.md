@@ -37,6 +37,13 @@ docker run -v /var/run/docker.sock:/var/run/docker.sock \
            -a host=`uname -n`
 ```
 
+The `--read-only` docker flag specifies that the container file system will be read-only.
+This is not a requirement but since currently there's no need for writing, it makes the container more secure.
+
+The `--security-opt=no-new-privileges` docker flag sets a kernel bit which stops the process or its children
+from gaining additional privileges via setuid or sgid.  
+Once again not required, but increases security.
+
 You can pass the `--no-stats` flag if you do not want stats to be
 published to Logentries every second. You __need this flag for Docker
 version < 1.5__.
