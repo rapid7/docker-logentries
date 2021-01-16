@@ -1,15 +1,25 @@
 # docker-logentries
 #
 # VERSION 1.0.0
+# 
+# Make sure you don't have uncommitted local changes, then build it like this: 
+#
+# $ TAG=795782686109.dkr.ecr.us-east-1.amazonaws.com/jobber/docker-logentries:alpine
+# $ docker build -t $TAG --label COMMIT=$(git show-ref --verify HEAD | cut -d' ' -f1) -f Dockerfile.alpine .
+# 
+# $ TAG=275552769658.dkr.ecr.us-east-1.amazonaws.com/jobber/docker-logentries:alpine
+# $ docker build -t $TAG --label COMMIT=$(git show-ref --verify HEAD | cut -d' ' -f1) -f Dockerfile.alpine .
+#
+# Then push the images to our private repos in ECR.
+#
 
-FROM mhart/alpine-node:5.10.1
+FROM mhart/alpine-node:15.6.0
 MAINTAINER Rapid 7 - InsightOps <InsightOpsTeam@rapid7.com>
 RUN apk add --no-cache bash
 
 WORKDIR /usr/src/app
-COPY package.json package.json
-RUN npm install --production
-RUN npm cache clean
+COPY package.json package-lock.json ./
+RUN npm ci --production && npm cache clean --force
 COPY index.js /usr/src/app/index.js
 
 ENTRYPOINT ["/usr/src/app/index.js"]
