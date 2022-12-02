@@ -29,7 +29,6 @@ function connect(opts) {
   return stream;
 }
 
-
 function start(opts) {
   var logsToken = opts.logstoken || opts.token;
   var statsToken = opts.statstoken || opts.token;
@@ -37,11 +36,24 @@ function start(opts) {
   var out;
   var noRestart = function() {};
 
+  var containersTokens = null;
+  if (opts.containersTokensFilepath) {
+    containersTokens = require(opts.containersTokensFilepath);
+  }
+
   var filter = through.obj(function(obj, enc, cb) {
     addAll(opts.add, obj);
     var token = '';
 
-    if (obj.line) {
+    if (obj.line && obj.image && containersTokens) {
+      var regex = /(.+):\w+/g;
+      var match = regex.exec(obj.image);
+
+      if (match != null) {
+        var repoName = match[1];
+        token = containersTokens[repoName];
+      }
+    } else if (obj.line) {
       token = logsToken;
     }
     else if (obj.type) {
@@ -69,7 +81,7 @@ function start(opts) {
 
   opts.events = events;
 
-  if (opts.logs !== false && logsToken) {
+  if (opts.logs !== false && (logsToken || containersTokens)) {
     loghose = logFactory(opts);
     loghose.pipe(filter);
     streamsOpened++;
@@ -175,7 +187,7 @@ function cli() {
     }
   });
 
-  if (argv.help || !(argv.token || argv.logstoken || argv.statstoken || argv.eventstoken)) {
+  if (argv.help || !(argv.token || argv.logstoken || argv.statstoken || argv.eventstoken || argv.containersTokensFilepath)) {
     console.log('Usage: docker-logentries [-l LOGSTOKEN] [-k STATSTOKEN] [-e EVENTSTOKEN]\n' +
                 '                         [-t TOKEN] [--secure] [--json]\n' +
                 '                         [--no-newline] [--no-stats] [--no-logs] [--no-dockerEvents]\n' +
@@ -183,6 +195,7 @@ function cli() {
                 '                         [--matchByImage REGEXP] [--matchByName REGEXP]\n' +
                 '                         [--skipByImage REGEXP] [--skipByName REGEXP]\n' +
                 '                         [--server HOSTNAME] [--port PORT]\n' +
+                '                         [--containersTokensFilepath CONTAINERSTOKENFILEPATH]\n' +
                 '                         [--help]');
 
     process.exit(1);
