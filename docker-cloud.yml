@@ -1,0 +1,8 @@
+logentries:
+  command: '-t TOKEN -j'
+  deployment_strategy: every_node
+  image: 'logentries/docker-logentries:latest'
+  privileged: true
+  restart: always
+  volumes:
+    - '/var/run/docker.sock:/var/run/docker.sock'

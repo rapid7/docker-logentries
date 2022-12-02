@@ -181,6 +181,12 @@ export DOCKER_REGISTRY_PREFIX=you-dockerhub-user/yourimage-name
 make push
 ```
 
+
+## Deploying to Docker Cloud
+
+[![Deploy to Docker Cloud](https://files.cloud.docker.com/images/deploy-to-dockercloud.svg)](https://cloud.docker.com/stack/deploy/?repo=https://github.com/rapid7/docker-logentries)
+
+
 ## How it works
 
 This module wraps four [Docker
