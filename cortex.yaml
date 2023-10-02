@@ -1,0 +1,24 @@
+---
+info:
+  title: Docker Logentries
+  description: Forward all your Docker logs to logentries, like a breeze
+  x-cortex-git:
+    github:
+      alias: r7org
+      repository: rapid7/docker-logentries
+  x-cortex-tag: docker-logentries
+  x-cortex-type: service
+  x-cortex-groups:
+  - target:library
+  - strategy:cloud
+  - status:deprecated
+  - exposure:internal-ship
+  x-cortex-owners:
+  - name: rapid7/dublin-dev-tools-cop
+    type: group
+    provider: GITHUB
+  x-cortex-domain-parents:
+  - tag: logsearch-dev-tools-cop
+openapi: 3.0.1
+servers:
+- url: "/"
