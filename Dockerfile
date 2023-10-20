@@ -2,7 +2,7 @@
 #
 # VERSION 0.2.0
 
-FROM node:0.12-onbuild
+FROM node:8.17.0-onbuild
 MAINTAINER Rapid 7 - InsightOps <InsightOpsTeam@rapid7.com>
 
 WORKDIR /usr/src/app
