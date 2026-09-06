@@ -19,6 +19,10 @@ info:
     provider: GITHUB
   x-cortex-domain-parents:
   - tag: logsearch-dev-tools-cop
+  x-cortex-oncall:
+    pagerduty:
+      id: P99L6RT
+      type: SERVICE
 openapi: 3.0.1
 servers:
 - url: "/"
